@@ -39,7 +39,7 @@ This option allows for the data to be Stored on a Separate MySQL Database.  Usef
 
 While this plugin was intended for Gravity Forms, it can be used by any plugin or even in your WordPress theme files. First you will want to make sure that you have installed the Gravitate Encryption Plugin and configured it.  Next, make sure to Test the plugin.  There is an Encryption Test option at the bottom of the plugin.  If it is working properly then the Un-encrypted Text will show as the same as the Decrypted Text.
 
-===How to Use===
+==How to Use==
 
 There are two ways to use this plugin:
 
@@ -48,17 +48,21 @@ There are two ways to use this plugin:
 
 ==To encrypt data use this PHP code:==
 
-if(class_exists(‘GDS_Encryption_Class’))
+<pre>
+if(class_exists(‘GDS_Encryption_Class’))<
 {
    echo GDS_Encryption_Class::encrypt(‘This is the Text to Encrypt’);
 }
+</pre>
 
 ==To decrypt data use this PHP code:==
 
+<pre>
 if(class_exists(‘GDS_Encryption_Class’))
 {
    echo GDS_Encryption_Class::decrypt(‘enx2:JKM3FFR4WP5HN6SG0C4ZAIF5K7H’);
 }
+</pre>
 
 NOTE: The above functions will also use the Remote Storage settings if they have been applied in the settings page. (Settings -> Gravitate Encryption)
 
@@ -80,11 +84,11 @@ You can update the code in two ways.  Either using FTP or you can edit the file 
 
 Go into the “gds_encryption.php” file and change:
 
-$gds_encryption_enable_settings_page = true;
+<pre>$gds_encryption_enable_settings_page = true;</pre>
 
 to
 
-$gds_encryption_enable_settings_page = false;
+<pre>$gds_encryption_enable_settings_page = false;</pre>
 
 
 == Installation ==
