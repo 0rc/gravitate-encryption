@@ -9,7 +9,9 @@ Allow data stored by Gravity Forms and other Plugins to be Encrypted and sent to
 
 == Description ==
 
-Plugin URI: http://www.gravitatedesign.com/blog/wordpress-and-gravity-forms/
+Author: Gravitate http://www.gravitatedesign.com
+
+Plugin Link: http://www.gravitatedesign.com/blog/wordpress-and-gravity-forms/
 
 Description: This plugin allows the data stored by Gravity forms and other Plugins to be Encrypted and even sent to another database if needed. The Plugin allows for Symmetric and A-Semmetric Encryption.
 
