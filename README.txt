@@ -49,18 +49,18 @@ There are two ways to use this plugin:
 ==To encrypt data use this PHP code:==
 
 <pre>
-if(class_exists(‘GDS_Encryption_Class’))<
+if(class_exists('GDS_Encryption_Class'))
 {
-   echo GDS_Encryption_Class::encrypt(‘This is the Text to Encrypt’);
+   echo GDS_Encryption_Class::encrypt('This is the Text to Encrypt');
 }
 </pre>
 
 ==To decrypt data use this PHP code:==
 
 <pre>
-if(class_exists(‘GDS_Encryption_Class’))
+if(class_exists('GDS_Encryption_Class'))
 {
-   echo GDS_Encryption_Class::decrypt(‘enx2:JKM3FFR4WP5HN6SG0C4ZAIF5K7H’);
+   echo GDS_Encryption_Class::decrypt('enx2:JKM3FFR4WP5HN6SG0C4ZAIF5K7H');
 }
 </pre>
 
