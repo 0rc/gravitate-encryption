@@ -2,8 +2,8 @@
 Contributors: (Gravitate)
 Tags: Gravitate, Encryption, Gravity Forms
 Requires at least: 3.5
-Tested up to: 3.5.1
-Stable tag: trunk
+Tested up to: 3.5.2
+Stable tag: 1.0.1
 
 Allow data stored by Gravity Forms and other Plugins to be Encrypted and sent to other databases.
 
@@ -104,3 +104,8 @@ to
 
 1. This is the Main Settings Page
 2. You can even setup a Remote Database to connect with in order to store your data.
+
+== Changelog ==
+
+= 1.0.1 =
+* Resolved Warnings when updating other plugins
