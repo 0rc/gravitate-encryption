@@ -1,9 +1,9 @@
-=== Gravitate Encryption ===
+﻿=== Gravitate Encryption ===
 Contributors: (Gravitate)
 Tags: Gravitate, Encryption, Gravity Forms
 Requires at least: 3.5
-Tested up to: 3.5.2
-Stable tag: 1.0.1
+Tested up to: 3.6.1
+Stable tag: 1.0.2
 
 Allow data stored by Gravity Forms and other Plugins to be Encrypted and sent to other databases.
 
@@ -109,3 +109,8 @@ to
 
 = 1.0.1 =
 * Resolved Warnings when updating other plugins
+
+= 1.0.2 =
+* Added wpdb->prepare to all Remote SQL Statements to help prevent SQL Injection.
+* Added mysqli_real_escape_string to all fields including Table names and Field names to help prevent SQL Injection.
+* Bug Fix - Checkmarks not saving when unchecked.
