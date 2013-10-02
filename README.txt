@@ -3,7 +3,7 @@ Contributors: (Gravitate)
 Tags: Gravitate, Encryption, Gravity Forms
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 
 Allow data stored by Gravity Forms and other Plugins to be Encrypted and sent to other databases.
 
@@ -40,6 +40,14 @@ This option allows for the data to be Stored on a Separate MySQL Database.  Usef
 ==WordPress Encryption==
 
 While this plugin was intended for Gravity Forms, it can be used by any plugin or even in your WordPress theme files. First you will want to make sure that you have installed the Gravitate Encryption Plugin and configured it.  Next, make sure to Test the plugin.  There is an Encryption Test option at the bottom of the plugin.  If it is working properly then the Un-encrypted Text will show as the same as the Decrypted Text.
+
+==Requirements==
+
+- PHP 5.2 or above
+- MySQL 5 or above
+- mysqli extension
+- WordPress 3.5 or above
+
 
 ==How to Use==
 
@@ -114,3 +122,6 @@ to
 * Added wpdb->prepare to all Remote SQL Statements to help prevent SQL Injection.
 * Added mysqli_real_escape_string to all fields including Table names and Field names to help prevent SQL Injection.
 * Bug Fix - Checkmarks not saving when unchecked.
+
+= 1.0.3 =
+* Removed wpdb->prepare per WordPress Developers Request. Instead made sure all values including Table Names, Field Names, Etc are escaped using mysqli_real_escape_string.
