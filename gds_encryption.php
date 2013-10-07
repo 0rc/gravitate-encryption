@@ -4,7 +4,7 @@
 Plugin Name: Gravitate Encryption
 Plugin URI: http://www.gravitatedesign.com/blog/wordpress-and-gravity-forms/
 Description: This plugin allows the data stored by Gravity forms and other Plugins to be Encrypted and even sent to another database if needed. The Plugin allows for Symmetric and A-Semmetric Encryption.
-Version: 1.0.1
+Version: 1.0.3
 Author: Gravitate
 Author URI: http://www.gravitatedesign.com
 */
@@ -123,6 +123,15 @@ class GDS_Encryption_Class
 			$update = 'error';
 			$value = serialize($_POST);
 			
+			$checkmarks = array('encrypt_all_gravity_forms', 'use_remote_storage', 'remote_database_removal');
+			foreach ($checkmarks as $checkmark) 
+			{
+				if(empty($_POST[$checkmark]))
+				{
+					$_POST[$checkmark] = 0;
+				}
+			}
+			
 			if(md5($options) == md5($value))
 			{
 				$update = true;
@@ -173,15 +182,15 @@ class GDS_Encryption_Class
 		{
 			$form_fields_defaults['encription_type'] = 'encryption_weak';
 		}
-		
+				
 		$form_fields = array();
 		foreach ($form_fields_defaults as $key => $value) 
 		{
-			if(!empty($_POST[$key]))
+			if(isset($_POST[$key]))
 			{
 				$form_fields[$key] = $_POST[$key];
 			}
-			else if(!empty($options[$key]))
+			else if(isset($options[$key]))
 			{
 				$form_fields[$key] = $options[$key];
 			}
@@ -661,6 +670,8 @@ class GDS_Encryption_Class
 	
 	public function save_to_remote($value, $lead_id, $group="")
 	{
+		global $wpdb;
+		
 		$options = unserialize(get_option( 'gds_encryption' ));
 		
 		if(!empty($options['use_remote_storage']))
@@ -669,7 +680,8 @@ class GDS_Encryption_Class
 			
 			if($link)
 			{
-				if (mysqli_query($link, "INSERT INTO " . $options['remote_database_table'] . " (`" . $options['remote_database_table_value'] . "`, `" . $options['remote_database_table_parent_id'] . "`, `" . $options['remote_database_table_group'] . "`) VALUES ('" . mysqli_real_escape_string($link, $value) . "', '" . mysqli_real_escape_string($link, $lead_id) . "', '" . mysqli_real_escape_string($link, $group) . "')"))
+				$sql = "INSERT INTO " . mysqli_real_escape_string($link, $options['remote_database_table']) . " (`" . mysqli_real_escape_string($link, $options['remote_database_table_value']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_parent_id']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_group']) . "`) VALUES ( '".mysqli_real_escape_string($link, $value)."', '".mysqli_real_escape_string($link, $lead_id)."', '".mysqli_real_escape_string($link, $group)."' )";
+				if (mysqli_query($link, $sql))
 				{
 					return "remoteID:".mysqli_insert_id($link);
 				}
@@ -682,6 +694,7 @@ class GDS_Encryption_Class
 	
 	public function get_from_remote($id)
 	{
+		global $wpdb;
 	
 		$options = unserialize(get_option( 'gds_encryption' ));
 			
@@ -689,7 +702,8 @@ class GDS_Encryption_Class
 		
 		if($link)
 		{
-			if ($result = mysqli_query($link, "SELECT `" . $options['remote_database_table_value'] . "` FROM " . $options['remote_database_table'] . " WHERE `" . $options['remote_database_table_id'] . "` = '" . mysqli_real_escape_string($link, $id) . "'")) 
+			$sql = "SELECT `" . mysqli_real_escape_string($link, $options['remote_database_table_value']) . "` FROM " . mysqli_real_escape_string($link, $options['remote_database_table']) . " WHERE `" . mysqli_real_escape_string($link, $options['remote_database_table_id']) . "` = '".mysqli_real_escape_string($link, $id)."'";
+			if($result = mysqli_query($link, $sql))
 			{
 				if($row = mysqli_fetch_assoc($result))
 				{
@@ -705,6 +719,8 @@ class GDS_Encryption_Class
 	
 	public function delete_entry($parent_id, $group="")
 	{
+		global $wpdb;
+		
 	    $options = unserialize(get_option( 'gds_encryption' ));
 	    
 	    if(!empty($options['remote_database_removal']))
@@ -713,7 +729,8 @@ class GDS_Encryption_Class
 		    
 		    if($link)
 		    {
-		    	mysqli_query($link, "DELETE FROM " . $options['remote_database_table'] . " WHERE `" . $options['remote_database_table_parent_id'] . "` = '" . mysqli_real_escape_string($link, $parent_id) . "' AND `" . $options['remote_database_table_group'] . "` = '" . mysqli_real_escape_string($link, $group) . "'");
+				$sql = "DELETE FROM " . mysqli_real_escape_string($link, $options['remote_database_table']) . " WHERE `" . mysqli_real_escape_string($link, $options['remote_database_table_parent_id']) . "` = '".mysqli_real_escape_string($link, $parent_id)."' AND `" . mysqli_real_escape_string($link, $options['remote_database_table_group']) . "` = '".mysqli_real_escape_string($link, $group)."'";
+		    	mysqli_query($link, $sql);
 		    }
 	    }
 	}
