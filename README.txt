@@ -3,7 +3,7 @@ Contributors: (Gravitate)
 Tags: Gravitate, Encryption, Gravity Forms
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 1.0.3
+Stable tag: trunk
 
 Allow data stored by Gravity Forms and other Plugins to be Encrypted and sent to other databases.
 
@@ -125,3 +125,7 @@ to
 
 = 1.0.3 =
 * Removed wpdb->prepare per WordPress Developers Request. Instead made sure all values including Table Names, Field Names, Etc are escaped using mysqli_real_escape_string.
+
+= 1.0.4 =
+* Added workaround for Gravity Forms returning short details on "gform_get_input_value" filter.  Should always be Long details if available.
+* Added feature that will still show values if using A-Symmetric Encryption and Private Key is blank on Confirmation Messages for Gravity Forms.

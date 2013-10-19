@@ -4,7 +4,7 @@
 Plugin Name: Gravitate Encryption
 Plugin URI: http://www.gravitatedesign.com/blog/wordpress-and-gravity-forms/
 Description: This plugin allows the data stored by Gravity forms and other Plugins to be Encrypted and even sent to another database if needed. The Plugin allows for Symmetric and A-Semmetric Encryption.
-Version: 1.0.3
+Version: 1.0.4
 Author: Gravitate
 Author URI: http://www.gravitatedesign.com
 */
@@ -665,6 +665,24 @@ class GDS_Encryption_Class
 	
 	public function gform_get_field_value($value, $lead, $field, $input_id)
 	{
+		global $wpdb;
+		
+		$options = unserialize(get_option( 'gds_encryption' ));
+		
+		if($options['encription_type'] == 'asymmetric' && isset($_POST['input_'.$field['id']]) && empty($options['private_key']))
+		{
+			return $_POST['input_'.$field['id']];
+		}
+		
+		$detail = $wpdb->get_row($wpdb->prepare("SELECT id FROM ".$wpdb->prefix."rg_lead_detail WHERE `lead_id` = %d AND `field_number` = %d", $lead['id'], $field['id']));
+		
+		$long = $wpdb->get_row($wpdb->prepare("SELECT value FROM ".$wpdb->prefix."rg_lead_detail_long WHERE `lead_detail_id` = %d", $detail->id));
+		
+		if(!empty($long->value))
+		{
+			$value = $long->value;
+		}
+		
 		return $this->get_field_value($value);
 	}
 	
