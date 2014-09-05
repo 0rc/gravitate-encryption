@@ -106,6 +106,8 @@ to
 1. Upload the `gds_encryption` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. You can configure the Encryption Settings in `Settings` -> `Graviteate Encryption`
+4. Create remote database table example:
+create table optout_form_data ( id int not null AUTO_INCREMENT, parent_id int, groupname varchar(100), value varchar(1000), field_name varchar(100), PRIMARY KEY (id) );
 
 
 == Screenshots ==

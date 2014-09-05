@@ -176,7 +176,8 @@ class GDS_Encryption_Class
 							 'remote_database_table_id' => 'id',
 							 'remote_database_table_parent_id' => 'parent_id',
 							 'remote_database_table_value' => 'value',
-							 'remote_database_table_group' => 'group');
+							 'remote_database_table_group' => 'group',
+                                                         'remote_database_table_fieldlabel' => 'fieldname');
 							 
 		if(!$mcrypt_available)
 		{
@@ -250,6 +251,7 @@ class GDS_Encryption_Class
 				document.getElementById('remote_database_table_value_container').style.display = '';
 				document.getElementById('remote_database_table_parent_id_container').style.display = '';
 				document.getElementById('remote_database_table_group_container').style.display = '';
+				document.getElementById('remote_database_table_fieldlabel_container').style.display = '';
 				document.getElementById('submit_test').style.display = '';
 			}
 			else 
@@ -265,6 +267,7 @@ class GDS_Encryption_Class
 				document.getElementById('remote_database_table_value_container').style.display = 'none';
 				document.getElementById('remote_database_table_parent_id_container').style.display = 'none';
 				document.getElementById('remote_database_table_group_container').style.display = 'none';
+				document.getElementById('remote_database_table_fieldlabel_container').style.display = 'none';
 				document.getElementById('submit_test').style.display = 'none';
 			}
 		
@@ -435,6 +438,12 @@ class GDS_Encryption_Class
 					  	<input type="text" autocomplete="off" id="remote_database_table_group" name="remote_database_table_group" maxlength="200" value="<?php echo $form_fields['remote_database_table_group'];?>" />
 					  </td>
 					</tr>
+					<tr id="remote_database_table_fieldlabel_container" valign="top">
+					  <th scope="row"><label for="remote_database_table_fieldlabel">Remote Database Table Fieldlabel Field Name</label></th>
+					  <td>
+					  	<input type="text" autocomplete="off" id="remote_database_table_fieldlabel" name="remote_database_table_fieldlabel" maxlength="200" value="<?php echo $form_fields['remote_database_table_fieldlabel'];?>" />
+					  </td>
+					</tr>
 		          </tbody>
 		        </table>
 		        <p class="submit">
@@ -595,9 +604,8 @@ class GDS_Encryption_Class
 		return $value;
 	}
 	
-	public function new_field_value($value, $parent_id, $group)
+	public function new_field_value($value, $parent_id, $group, $field_label)
 	{
-			
 		$new_value = '';
 		
 		if(empty($value))
@@ -620,14 +628,14 @@ class GDS_Encryption_Class
 		}
 		$new_value = $this->encrypt($value);
 		
-		$new_value = $this->save_to_remote($new_value, $parent_id, $group);
+		$new_value = $this->save_to_remote($new_value, $parent_id, $group, $field_label);
 			
 		return $new_value;
 	}
 	
 	public function gform_save_field_value($value, $lead, $field, $form)
 	{		
-		return $this->new_field_value($value, $lead['id'], "GravityForms");
+		return $this->new_field_value($value, $lead['id'], "GravityForms", $field['label']);
 	}
 	
 	
@@ -686,7 +694,7 @@ class GDS_Encryption_Class
 		return $this->get_field_value($value);
 	}
 	
-	public function save_to_remote($value, $lead_id, $group="")
+	public function save_to_remote($value, $lead_id, $group="", $field_label)
 	{
 		global $wpdb;
 		
@@ -698,7 +706,7 @@ class GDS_Encryption_Class
 			
 			if($link)
 			{
-				$sql = "INSERT INTO " . mysqli_real_escape_string($link, $options['remote_database_table']) . " (`" . mysqli_real_escape_string($link, $options['remote_database_table_value']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_parent_id']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_group']) . "`) VALUES ( '".mysqli_real_escape_string($link, $value)."', '".mysqli_real_escape_string($link, $lead_id)."', '".mysqli_real_escape_string($link, $group)."' )";
+				$sql = "INSERT INTO " . mysqli_real_escape_string($link, $options['remote_database_table']) . " (`" . mysqli_real_escape_string($link, $options['remote_database_table_value']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_parent_id']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_group']) . "`, `" . mysqli_real_escape_string($link, $options['remote_database_table_fieldlabel']) . "`) VALUES ( '".mysqli_real_escape_string($link, $value)."', '".mysqli_real_escape_string($link, $lead_id)."', '".mysqli_real_escape_string($link, $group)."', '".mysqli_real_escape_string($link, $field_label)."' )";
 				if (mysqli_query($link, $sql))
 				{
 					return "remoteID:".mysqli_insert_id($link);
